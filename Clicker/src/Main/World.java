@@ -8,6 +8,7 @@ import States.WorldViewer;
 
 public class World {
 	
+	public boolean visable = false;
 	public double x = 0, y = 0;
 	public double difficulty = 100;
 	public double temperature = 58.62;

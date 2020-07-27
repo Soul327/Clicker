@@ -40,8 +40,7 @@ public class Main implements Runnable {
 	
 	//Starts the program
 	public static void main(String args[]) throws FileNotFoundException, IOException {
-		Commands commands = new Commands();
-		commands.start();
+		//Commands commands = new Commands(); commands.start();
 		main = new Main();
 		main.start();
 	}

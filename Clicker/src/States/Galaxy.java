@@ -22,7 +22,6 @@ public class Galaxy extends State{
 		x = 600; y = 20;
 		width = 500; height = 500;
 		name = "Galaxy Viewer: "+galaxyName;
-		System.out.println(worlds.size());
 		
 		WorldViewer.world = worlds.get(0);
 		worlds.get(0).parts.add(new Food(worlds.get(0)));

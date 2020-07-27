@@ -85,6 +85,10 @@ public class StateManager {
 					if(mx>s.x+s.width-20 & mx<s.x+s.width)
 						s.visible = false;
 				}
+				if(heldState!=null) {
+					heldState.x = mx+mouseHeldX;
+					heldState.y = my+mouseHeldY;
+				}
 				if(!MouseManager.leftPressed) {
 					mouseHeld = false;
 					heldState = null;
