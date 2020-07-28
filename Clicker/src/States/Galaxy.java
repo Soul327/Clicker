@@ -8,7 +8,6 @@ import Main.World;
 import Misc.Graphics;
 import Misc.Mat;
 import Misc.MouseManager;
-import Parts.Food;
 
 public class Galaxy extends State{
 	
@@ -18,13 +17,13 @@ public class Galaxy extends State{
 	public Galaxy() {
 		//Create new galaxy
 		double numOfWorlds = Math.random()*10+20;
+		numOfWorlds = 1;
 		for(int z=0;z<numOfWorlds;z++) worlds.add(new World(z+1));
-		x = 600; y = 20;
+		x = 1210; y = 25;
 		width = 500; height = 500;
 		name = "Galaxy Viewer: "+galaxyName;
 		
 		WorldViewer.world = worlds.get(0);
-		worlds.get(0).parts.add(new Food(worlds.get(0)));
 		
 	}
 	

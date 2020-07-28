@@ -112,7 +112,7 @@ public class Main implements Runnable {
 		scale = (double)width/baseWidth;
 		bs = canvas.getBufferStrategy();
 		if(bs == null){
-			canvas.createBufferStrategy(2);
+			canvas.createBufferStrategy(3);
 			return;
 		}
 		g = bs.getDrawGraphics();

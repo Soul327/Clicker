@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import Main.Main;
+import Main.Settings;
 import Misc.Graphics;
 import Misc.KeyManager;
 import Misc.MouseManager;
@@ -24,10 +25,6 @@ public class StateManager {
 		s.height = 200;
 		states.add(s);
 		
-		s = new StateIncubator();
-		s.visible = true;
-		states.add(s);
-		
 		s = new Galaxy();
 		s.visible = true;
 		states.add(s);
@@ -44,19 +41,35 @@ public class StateManager {
 	
 	boolean mouseHeld = false;
 	int mouseHeldX = 0,mouseHeldY = 0;
-	State heldState = null;
+	public static State heldState = null;
 	public void render(Graphics g) {
 		for(State s:states) {
 			if(s.visible) {
-				BufferedImage image = new BufferedImage(s.width, s.height, BufferedImage.TYPE_INT_ARGB);
+				long startTime = System.currentTimeMillis();
 				
+				//Draw State on image so that it does not overlap in to other windows or background
+				BufferedImage image = new BufferedImage(s.width, s.height, BufferedImage.TYPE_INT_ARGB);
 				Graphics i = new Graphics((Graphics2D)image.getGraphics());
 				s.srender(i);
 				//s.debugRender(i);
 				
+				//Draw debug
+				ArrayList<String> debugSTR = new ArrayList<String>();
+				if(Settings.showRenderTime) debugSTR.add( "Render time: " + (System.currentTimeMillis()-startTime) +"ms");
+
+				byte line = 1;
+				i.setFont( "Serif",Font.PLAIN,15 );
+				i.setColor(Color.darkGray);
+				for(String ss:debugSTR) {
+					i.fillRect(0, (line-1)*i.fontSize, i.getStringLength(ss+" "), i.fontSize*1.3);
+					i.drawOutlinedString( ss, 0, i.fontSize*line++);
+				}
+				
+				//Draw outline
 				if(s.selected) i.setColor(Color.white);
 				else i.setColor(Color.gray);
 				i.drawRect(0, 0, s.width-1, s.height-1);
+				
 				
 				g.drawImage(image, s.x, s.y, s.width, s.height);
 				
@@ -67,25 +80,26 @@ public class StateManager {
 				
 				int mx = MouseManager.mouseX,my = MouseManager.mouseY;
 				if(MouseManager.leftPressed)
-				if(mx>s.x & mx<s.x+s.width & my>s.y-20 & my<s.y ) {//Mouse on title bar
-					if(mx<s.x+s.width-20){
-						if(heldState==s | heldState == null) {
-							if(!mouseHeld) {
-								mouseHeldX = (s.x - mx);
-								mouseHeldY = (s.y - my);
+					if(mx>s.x & mx<s.x+s.width & my>s.y-20 & my<s.y ) {//Mouse on title bar
+						if(mx<s.x+s.width-20){
+							if(heldState==s | heldState == null) {
+								if(!mouseHeld) {
+									mouseHeldX = (s.x - mx);
+									mouseHeldY = (s.y - my);
+								}
+								s.x = mx+mouseHeldX;
+								s.y = my+mouseHeldY;
+								
+								mouseHeld = true;
+								heldState = s;
+								moveStateToTop(s);
 							}
-							s.x = mx+mouseHeldX;
-							s.y = my+mouseHeldY;
-							
-							mouseHeld = true;
-							heldState = s;
-							moveStateToTop(s);
 						}
+						if(mx>s.x+s.width-20 & mx<s.x+s.width & heldState==null) s.visible = false;
 					}
-					if(mx>s.x+s.width-20 & mx<s.x+s.width)
-						s.visible = false;
-				}
-				if(heldState!=null) {
+				if(heldState==null) {
+					
+				}else{
 					heldState.x = mx+mouseHeldX;
 					heldState.y = my+mouseHeldY;
 				}

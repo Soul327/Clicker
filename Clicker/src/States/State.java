@@ -16,15 +16,17 @@ public abstract class State {
 	public void stick() {
 		mx = MouseManager.mouseX;
 		my = MouseManager.mouseY;
-		if(mx>x & mx<x+width & my>y & my<y+height)
-			mouseOverState = true;
-		else
-			mouseOverState = false;
-		
-		if(MouseManager.leftPressed & mouseOverState)
-			selected = true;
-		if(MouseManager.leftPressed & !mouseOverState)
-			selected = false;
+		if(StateManager.heldState==null) {
+			if(mx>x & mx<x+width & my>y & my<y+height)
+				mouseOverState = true;
+			else
+				mouseOverState = false;
+			
+			if(MouseManager.leftPressed & mouseOverState)
+				selected = true;
+			if(MouseManager.leftPressed & !mouseOverState)
+				selected = false;
+		}
 		tick();
 	}
 	public void srender(Graphics g) {

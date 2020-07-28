@@ -20,4 +20,9 @@ public class Mat {
 			angle = Math.atan2( py,px);
 		return angle;
 	}
+	public static int inRange(double value, int lower, int upper) {
+		if(value >= upper) return upper;
+		if(value <= lower) return lower;
+		return (int)Math.round(value);
+	}
 }
