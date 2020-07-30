@@ -1,5 +1,5 @@
 package Main;
 
 public class Chunk {
-	Tile[][] adjacent = new Tile[3][3];
+	Tile[][] tiles = new Tile[3][3];
 }

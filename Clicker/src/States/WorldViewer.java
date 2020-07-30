@@ -6,20 +6,20 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import Entities.Entity;
 import Main.World;
 import Misc.Graphics;
 import Misc.KeyManager;
 
 public class WorldViewer extends State {
 	public static World world;
+	public static Entity selectedEntity;
 	
-	double camSpeed = 1;
+	double camSpeed = 10;
 	
 	public WorldViewer() {
 		x = 5; y = 25;
 		width = 1200; height = 970;
-		
-		
 	}
 	public void tick() {
 		if(world!=null) visible = true;
@@ -34,9 +34,9 @@ public class WorldViewer extends State {
 	
 	public void render(Graphics g) {
 		g.setFont( "Serif",Font.PLAIN,15 ); g.setColor(Color.white);
-		if(world.followed!=null) {
-			world.camX = world.followed.x*-world.zoom+width/2;
-			world.camY = world.followed.y*-world.zoom+height/2;
+		if(selectedEntity!=null) {
+			world.camX = selectedEntity.x*-world.zoom+width/2;
+			world.camY = selectedEntity.y*-world.zoom+height/2;
 		}
 		world.render(g);
 		g.drawString("Difficulty: "+Math.round(world.difficulty), 5, g.fontSize);
@@ -48,5 +48,10 @@ public class WorldViewer extends State {
 	public void scroll(int scrollAmount) {
 		world.zoom -= scrollAmount/3;
 		if(world.zoom<1) world.zoom = 1;
+	}
+	
+	public void setWorld(World world) {
+		WorldViewer.world = world;
+		selectedEntity = null;
 	}
 }

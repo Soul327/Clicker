@@ -6,7 +6,7 @@ import Misc.Graphics;
 import Misc.Mat;
 
 public class Tile{
-	boolean isLand = true;
+	public boolean isLand = true;
 	Color color = new Color(0,100,0);
 	Tile[][] adjacent = new Tile[3][3];
 	World world;
@@ -20,7 +20,7 @@ public class Tile{
 		if(world.temperature<32 ) color = new Color(200,200,200);//Grass
 		if(world.temperature>100) color = new Color(238,212,173);//Sand
 		if(world.temperature>200) color = new Color(100,100,100);//Death
-		getColor();
+		color = getColor();
 		
 	}
 	public void water() {
@@ -55,7 +55,7 @@ public class Tile{
 				}
 			}
 	}
-	public void getColor() {
+	public Color getColor() {
 		int amount = 0;
 		double advR = 0, advG = 0, advB = 0;
 		for(int x=0;x<adjacent.length;x++)
@@ -77,8 +77,9 @@ public class Tile{
 			advR = Mat.inRange(advR, 0, 255);
 			advG = Mat.inRange(advG, 0, 255);
 			advB = Mat.inRange(advB, 0, 255);
-			color = new Color((int)advR,(int)advG,(int)advB);
+			return new Color((int)advR,(int)advG,(int)advB);
 		}
+		return color;
 	}
 	public void render(Graphics g) {
 		if(isLand) {

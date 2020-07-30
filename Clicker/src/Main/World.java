@@ -7,21 +7,23 @@ import java.util.ArrayList;
 
 import Entities.Entity;
 import Entities.Peep;
+import Entities.Tree;
 import Misc.Graphics;
 import Misc.Mat;
 import States.WorldViewer;
 
 public class World {
 	
+	public static int tid = 0;
+	public int id = 0;
 	public boolean visable = false;
 	public double 
 		x = 0, y = 0,
 		difficulty = 100, temperature = 58.62, o2 = 100, size = 100;
 	
 	public Tile[][] tiles;
-	ArrayList<Entity> entities = new ArrayList<Entity>();
+	public ArrayList<Entity> entities = new ArrayList<Entity>();
 	public double camX = 0, camY = 0, zoom = 9;
-	public Entity followed;
 	
 	public World(double difficulty) {
 		this.difficulty = difficulty;
@@ -34,15 +36,20 @@ public class World {
 		if(Math.random()>.5) x = -x;
 		if(Math.random()>.5) y = -y;
 		
+		//Create tiles 
 		tiles = new Tile[(int)size][(int)size];
 		for(int x=0;x<tiles.length;x++)
 			for(int y=0;y<tiles[x].length;y++)
 				tiles[x][y] = new Tile(this,x,y);
-		for(int x=0;x<tiles.length;x++)
-			for(int y=0;y<tiles[x].length;y++)
-				tiles[x][y].water();
-		//for(int z=0;z<100;z++) entities.add(new Peep(this));
+		//Add Water
+		if(Settings.enableWater)
+			for(int x=0;x<tiles.length;x++)
+				for(int y=0;y<tiles[x].length;y++)
+					tiles[x][y].water();
+		
+		for(int z=0;z<3;z++) entities.add(new Peep(this));
 		//followed = entities.get(0);
+		for(int z=0;z<Math.random()*size;z++) entities.add(new Tree(this, null));
 	}
 	public void tick() {
 		for(Entity e:entities) e.tick();
@@ -93,6 +100,14 @@ public class World {
 				else
 					g.drawImage(image, x*32, y*32, 32, 32);
 			}
+	}
+	
+	public Tile getTile(int x, int y) {
+		if(x>0 & y>0)
+			if(x<tiles.length)
+				if(y<tiles[x].length)
+					return tiles[x][y];
+		return null;
 	}
 	
 	public String toString() {

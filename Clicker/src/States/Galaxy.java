@@ -17,7 +17,7 @@ public class Galaxy extends State{
 	public Galaxy() {
 		//Create new galaxy
 		double numOfWorlds = Math.random()*10+20;
-		numOfWorlds = 1;
+		numOfWorlds = 3;
 		for(int z=0;z<numOfWorlds;z++) worlds.add(new World(z+1));
 		x = 1210; y = 25;
 		width = 500; height = 500;
@@ -37,7 +37,7 @@ public class Galaxy extends State{
 		World close = null;
 		for(World w:worlds) {
 			g.setColor(new Color(100,100,100));
-			double drawSize = w.size/20;
+			double drawSize = w.size/2;
 			if(drawSize<2) drawSize = 2;
 			g.fillCenterCircle(w.x+width/2, w.y+height/2, drawSize);
 			if(WorldViewer.world == w) {

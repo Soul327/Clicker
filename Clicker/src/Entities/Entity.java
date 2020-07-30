@@ -1,5 +1,7 @@
 package Entities;
 
+import Main.Settings;
+import Main.Tile;
 import Main.World;
 import Misc.Graphics;
 import Misc.Mat;
@@ -29,6 +31,23 @@ public abstract class Entity {
 			return false;
 		}
 	}
+	public void checkCollision() {
+		if( x<0 ) x = 0;
+		if( y<0 ) y = 0;
+		if( x> world.size - 1) x = world.size-1;
+		if( y> world.size - 1) y = world.size-1;
+		//Push out of water
+		if(Settings.enableWater) {
+			Tile tile = world.getTile((int)x, (int)y);
+			if(tile!=null)
+				if( !tile.isLand ) 
+					if( x-(int)x < (int)x + 1 - x ) {
+						//x-=x-(int)x;
+						x-=(int)x + 1 - x;
+					}
+		}
+	}
+	
 }
 class Location {
 	public double x,y;
